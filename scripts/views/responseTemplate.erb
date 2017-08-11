@@ -1,9 +1,0 @@
-So you're looking for <%= data.search %> eh? Here's the top 5 places I found!!
-
-<% data.restaurants.forEach((place) =>{ %>
-      <%= place.restaurant.name %>
-      Rating: <%= place.restaurant.user_rating.aggregate_rating %>
-      Address: <%= place.restaurant.location.address %> 
-      Menu: <%= place.restaurant.menu_url %>
-  <% }); %>
-
