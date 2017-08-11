@@ -12,7 +12,6 @@ module.exports = (robot) ->
 
   # TFM
   robot.respond /help/i, (res) ->
-    # h/t https://stackoverflow.com/questions/8660659/render-ejs-file-in-node-js
     htmlContent = fs.readFileSync(__dirname + '/views/helpTemplate.ejs', 'utf8');
     htmlRenderized = ejs.render(htmlContent, {filename: 'helpTemplate.ejs'})
 
@@ -43,6 +42,13 @@ module.exports = (robot) ->
     cat = captureGroup.toLowerCase()
 
     msg.reply 'Awesome! Where are you? (e.g. 10 East 21st St, New York, NY)'
+    console.log(msg.message.user.real_name)
+    console.log(msg.message.user.name)
+    console.log(msg.message.user.tz)
+    console.log(msg.message.user.profile.image_512)
+    console.log(msg.message.user.profile.email)
+    # console.log(msg.message)
+
     dialog.addChoice /(.+)/i, (res) ->
       loc = {}
       captureGroup2 = res.match[1]
@@ -54,7 +60,6 @@ module.exports = (robot) ->
         .get() (err, httpRes, body) ->
           
           responseData2 = JSON.parse body
-          # h/t https://stackoverflow.com/questions/8660659/render-ejs-file-in-node-js
           console.log(responseData2)
           loc.lat = responseData2.results[0].geometry.location.lat
           loc.long = responseData2.results[0].geometry.location.lng
@@ -88,7 +93,6 @@ module.exports = (robot) ->
                 mapUrl = "http://maps.google.com/maps/api/staticmap?center=#{address}&zoom=15.5&size=512x512&maptype=roadmap#{addressString}&markers=color:green%7C#{address}&sensor=false&format=png&key=AIzaSyBSuS8_clfr2PmZw8UpNZasQ-6M9AP7N3w"
                 data = JSON.parse body
                 data.search = cat
-                # h/t https://stackoverflow.com/questions/8660659/render-ejs-file-in-node-js
                 
                 res.send "So you\'re looking for #{data.search} eh? Here's the top 5 places I found near you!!"
                 counter = 1
@@ -140,6 +144,23 @@ module.exports = (robot) ->
                 }
                 res.send msgData2
                 console.log(data)
+                postData = JSON.stringify({
+                  name: msg.message.user.real_name
+                  user_name: msg.message.user.name
+                  tz: msg.message.user.tz
+                  image: msg.message.user.profile.image_512
+                  email: msg.message.user.profile.email
+                  search: data.search
+                  location: responseData2.results[0].formatted_address
+                })
+
+                console.log(postData)
+                robot.http("http://localhost:3000/entries")
+                  .header('Content-Type', 'application/json')
+                  .post(postData) (err, response, body) ->
+
+                    console.log(body)
+                    result = JSON.parse(body)
               else
                 console.log(responseData)
                 res.send("Im sorry, there were no #{cat} places near you ;( Try searching for something else!")
@@ -198,7 +219,6 @@ module.exports = (robot) ->
                 mapUrl = "http://maps.google.com/maps/api/staticmap?center=#{address}&zoom=15.5&size=512x512&maptype=roadmap#{addressString}&markers=color:green%7C#{address}&sensor=false&format=png&key=AIzaSyBSuS8_clfr2PmZw8UpNZasQ-6M9AP7N3w"
                 data = JSON.parse body
                 data.search = cat
-                # h/t https://stackoverflow.com/questions/8660659/render-ejs-file-in-node-js
                 
                 res.send "So you\'re looking for #{data.search} eh? Here's the top 5 places I found near you!!"
                 counter = 1
