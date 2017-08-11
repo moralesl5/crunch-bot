@@ -146,14 +146,14 @@ module.exports = (robot) ->
   return
 
   # TFM
-  switchBoard2 = new Conversation(robot)
-  robot.hear /Im poor and hungry for (.*)/i, (msg) ->
-    dialog = switchBoard2.startDialog(msg)
+  switchBoardTwo = new Conversation(robot)
+  robot.hear /Im poor but I want (.&)/i, (msg) ->
+    dialog = switchBoardTwho.startDialog(msg)
     captureGroup = msg.match[1]
     cat = captureGroup.toLowerCase()
 
     msg.reply 'On a budget? Awesome! Where are you? (e.g. 10 East 21st St, New York, NY)'
-    dialog.addChoice /(.+)/i, (res) ->
+    dialog.addChoice /(.-)/i, (res) ->
       loc = {}
       captureGroup2 = res.match[1]
       cat2 = captureGroup2
