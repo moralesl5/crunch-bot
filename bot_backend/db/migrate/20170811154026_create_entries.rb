@@ -8,6 +8,7 @@ class CreateEntries < ActiveRecord::Migration[5.1]
       t.string :email
       t.string :search
       t.string :location
+      t.integer :count
 
       t.timestamps
     end

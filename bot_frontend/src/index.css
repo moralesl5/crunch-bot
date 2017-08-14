@@ -3,3 +3,29 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+.header-container{
+	background-color: blue;
+	position: absolute;
+	top: 0px;
+	width: 100vw;
+	height: 50px;
+}
+
+.display-container{
+	background-color: red;
+	position: relative;
+	width: 80vw;
+	height: 70vh;
+	margin: 0 auto;
+	margin-top: 110px;
+
+}
+
+.footer-container{
+	background-color: green;
+	position: absolute;
+	bottom: 0px;
+	width: 100vw;
+	height: 50px;
+}
