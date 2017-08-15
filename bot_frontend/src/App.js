@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
 import Header from './components/Header'
+import Feed from './components/Feed'
 import Display from './components/Display'
-import Footer from './components/Footer'
 
 class App extends Component {
   constructor(){
@@ -10,23 +10,26 @@ class App extends Component {
     this.state = {
       results: [],
       displayed: {},
-      showAll: false
+      home: true
     }
   }
 
-  showResults(e){
-    if (e.target.className === "show-all"){
+  toggleHome(e){
+    console.log('TOGGLE TOGGLE');
+    console.log(e.target.className);
+    if (e.target.className === 'home-toggle'){
       this.setState({
-        showAll: true
-      })
-    } else{
-      this.setState({
-        showAll: false
-      })
+        home: false
+      }) 
+      }else{
+        this.setState({
+          home: true
+        })
+      }
     }
-  }
 
   displayedInfo(key){
+    console.log('displayedInfo fired from app.  key is: ' + key)
     this.setState({
       displayed: this.state.results[key]
     })
@@ -51,15 +54,20 @@ class App extends Component {
       <div className="App">
         <Header 
           displayedInfo = {this.displayedInfo.bind(this)}
-          showAllToggle = {this.showResults.bind(this)}
           status = {this.state.showAll}
         />
-        <Display 
-          results = {this.state.results}
+        <Feed 
+          displayedInfo = {this.displayedInfo.bind(this)}
+          list = {this.state.results}
           displayed = {this.state.displayed}
           showAll = {this.state.showAll}
+          toggleHome = {this.toggleHome.bind(this)}
+          status = {this.state.home}
         />
-        <Footer />
+        <Display
+          displayed = {this.state.displayed}
+          status = {this.state.home}
+        />
       </div>
     );
   }

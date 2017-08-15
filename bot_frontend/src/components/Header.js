@@ -4,12 +4,7 @@ class Header extends Component{
 	render(){
 		return(
 			<div className = "header-container">
-				<a
-					className = "show-all"
-					onClick={
-						this.props.showAllToggle.bind(this)
-					}
-				>Searches</a>
+				<h3> CrunchFeed </h3>
 			</div>
 		)
 	}
